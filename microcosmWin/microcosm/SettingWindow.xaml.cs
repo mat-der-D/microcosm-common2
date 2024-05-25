@@ -116,25 +116,19 @@ namespace microcosm
             SaveAspectKindLabel.Content = "";
             SaveOrbsLabel.Content = "";
 
-            if (main.settings[0].houseCalc == config.EHouseCalc.PLACIDUS)
             {
-                placidus.IsChecked = true;
-            }
-            else if (main.settings[0].houseCalc == config.EHouseCalc.KOCH)
-            {
-                koch.IsChecked = true;
-            }
-            else if (main.settings[0].houseCalc == config.EHouseCalc.CAMPANUS)
-            {
-                campanus.IsChecked = true;
-            }
-            else if (main.settings[0].houseCalc == config.EHouseCalc.EQUAL)
-            {
-                equal.IsChecked = true;
-            }
-            else if (main.settings[0].houseCalc == config.EHouseCalc.ZEROARIES)
-            {
-                zeroaries.IsChecked = true;
+                // TODO: そもそも RadioButton の選択を Enum にやらせればこんな分岐は要らないはず
+                var houseCalc = main.settings[0].houseCalc;
+                var target = houseCalc switch
+                {
+                    EHouseCalc.PLACIDUS => placidus,
+                    EHouseCalc.KOCH => koch,
+                    EHouseCalc.CAMPANUS => campanus,
+                    EHouseCalc.EQUAL => equal,
+                    EHouseCalc.ZEROARIES => zeroaries,
+                    _ => throw new ArgumentOutOfRangeException(nameof(houseCalc)),
+                };
+                target.IsChecked = true;
             }
 
             if (main.settings[0].progression == config.EProgression.SECONDARY)
@@ -259,26 +253,21 @@ namespace microcosm
             SaveAspectKindLabel.Content = "";
             SaveOrbsLabel.Content = "";
 
-            if (main.settings[index].houseCalc == config.EHouseCalc.PLACIDUS)
             {
-                placidus.IsChecked = true;
+                // TODO: そもそも RadioButton の選択を Enum にやらせればこんな分岐は要らないはず
+                var houseCalc = main.settings[index].houseCalc;
+                var target = houseCalc switch
+                {
+                    EHouseCalc.PLACIDUS => placidus,
+                    EHouseCalc.KOCH => koch,
+                    EHouseCalc.CAMPANUS => campanus,
+                    EHouseCalc.EQUAL => equal,
+                    EHouseCalc.ZEROARIES => zeroaries,
+                    _ => throw new ArgumentOutOfRangeException(nameof(houseCalc)),
+                };
+                target.IsChecked = true;
             }
-            else if (main.settings[index].houseCalc == config.EHouseCalc.KOCH)
-            {
-                koch.IsChecked = true;
-            }
-            else if (main.settings[index].houseCalc == config.EHouseCalc.CAMPANUS)
-            {
-                campanus.IsChecked = true;
-            }
-            else if (main.settings[index].houseCalc == config.EHouseCalc.EQUAL)
-            {
-                equal.IsChecked = true;
-            }
-            else if (main.settings[index].houseCalc == config.EHouseCalc.ZEROARIES)
-            {
-                zeroaries.IsChecked = true;
-            }
+
 
             if (main.settings[index].progression == config.EProgression.SECONDARY)
             {
@@ -509,6 +498,7 @@ namespace microcosm
                 setting.progression = EProgression.CPS;
             }
 
+            // TODO: そもそも RadioButton の選択を Enum にやらせればこんな分岐は要らないはず
             if (placidus.IsChecked == true)
             {
                 setting.houseCalc = EHouseCalc.PLACIDUS;

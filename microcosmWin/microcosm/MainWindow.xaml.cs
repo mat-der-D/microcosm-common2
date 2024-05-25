@@ -804,26 +804,16 @@ namespace microcosm
             }
 
 
-            if (currentSetting.houseCalc == EHouseCalc.CAMPANUS)
+            mainWindowVM.houseDivide = currentSetting.houseCalc switch
             {
-                mainWindowVM.houseDivide = "CAMPANUS";
-            }
-            else if (currentSetting.houseCalc == EHouseCalc.EQUAL)
-            {
-                mainWindowVM.houseDivide = "EQUAL";
-            }
-            else if (currentSetting.houseCalc == EHouseCalc.KOCH)
-            {
-                mainWindowVM.houseDivide = "KOCH";
-            }
-            else if (currentSetting.houseCalc == EHouseCalc.PLACIDUS)
-            {
-                mainWindowVM.houseDivide = "PLACIDUS";
-            }
-            else if (currentSetting.houseCalc == EHouseCalc.ZEROARIES)
-            {
-                mainWindowVM.houseDivide = "Zero Aries";
-            }
+                EHouseCalc.PLACIDUS => "PLACIDUS",
+                EHouseCalc.KOCH => "KOCH",
+                EHouseCalc.CAMPANUS => "CAMPANUS",
+                EHouseCalc.EQUAL => "EQUAL",
+                EHouseCalc.ZEROARIES => "Zero Aries",
+                _ => throw new ArgumentOutOfRangeException(nameof(currentSetting.houseCalc)),
+            };
+
             if (configData.centric == ECentric.GEO_CENTRIC)
             {
                 mainWindowVM.centricMode = "GeoCentric";

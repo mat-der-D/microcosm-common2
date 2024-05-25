@@ -457,31 +457,16 @@ namespace microcosm.calc
             double[] cusps = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
             double[] ascmc = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
-            if (houseKind == EHouseCalc.PLACIDUS)
+            var hsys = houseKind switch
             {
-                // Placidas
-                s.swe_houses(dret[1], lat, lng, 'P', cusps, ascmc);
-            }
-            else if (houseKind == EHouseCalc.KOCH)
-            {
-                // Koch
-                s.swe_houses(dret[1], lat, lng, 'K', cusps, ascmc);
-            }
-            else if (houseKind == EHouseCalc.CAMPANUS)
-            {
-                // Campanus
-                s.swe_houses(dret[1], lat, lng, 'C', cusps, ascmc);
-            }
-            else if (houseKind == EHouseCalc.EQUAL)
-            {
-                // Equal
-                s.swe_houses(dret[1], lat, lng, 'E', cusps, ascmc);
-            }
-            else
-            {
-                // Zero Aries
-                s.swe_houses(dret[1], lat, lng, 'N', cusps, ascmc);
-            }
+                EHouseCalc.PLACIDUS => 'P',
+                EHouseCalc.KOCH => 'K',
+                EHouseCalc.CAMPANUS => 'C',
+                EHouseCalc.EQUAL => 'E',
+                EHouseCalc.ZEROARIES => 'N',
+                _ => throw new ArgumentOutOfRangeException(nameof(houseKind)),
+            };
+            s.swe_houses(dret[1], lat, lng, hsys, cusps, ascmc);
             s.swe_close();
 
             return cusps;
