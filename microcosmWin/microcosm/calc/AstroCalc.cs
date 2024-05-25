@@ -1005,29 +1005,14 @@ namespace microcosm.calc
 
         public Dictionary<int, PlanetData> Progress(Dictionary<int, PlanetData> list1, UserData udata, DateTime transitDate, double timezone, double lat, double lng)
         {
-            Dictionary<int, PlanetData> p;
-            if (currentSetting.progression == EProgression.SOLAR)
+            return currentSetting.progression switch
             {
-                p = SolarArcCalc(list1, udata.GetBirthDateTime(), transitDate, timezone);
-            }
-            else if (currentSetting.progression == EProgression.SECONDARY)
-            {
-                p = SecondaryProgressionCalc(list1, udata.GetBirthDateTime(), transitDate, timezone, lat, lng);
-            }
-            else if (currentSetting.progression == EProgression.PRIMARY)
-            {
-                p = PrimaryProgressionCalc(list1, udata.GetBirthDateTime(), transitDate);
-            }
-            else if (currentSetting.progression == EProgression.CPS)
-            {
-                p = CompositProgressionCalc(list1, udata.GetBirthDateTime(), transitDate, timezone);
-            }
-            else
-            {
-                p = PositionCalc(transitDate, udata.lat, udata.lng, configData.houseCalc, 1);
-            }
-
-            return p;
+                EProgression.SOLAR => SolarArcCalc(list1, udata.GetBirthDateTime(), transitDate, timezone),
+                EProgression.SECONDARY => SecondaryProgressionCalc(list1, udata.GetBirthDateTime(), transitDate, timezone, lat, lng),
+                EProgression.PRIMARY => PrimaryProgressionCalc(list1, udata.GetBirthDateTime(), transitDate),
+                EProgression.CPS => CompositProgressionCalc(list1, udata.GetBirthDateTime(), transitDate, timezone),
+                _ => PositionCalc(transitDate, udata.lat, udata.lng, configData.houseCalc, 1), // Unreachable?
+            };
         }
 
         public Dictionary<int, PlanetData> DraconicPositionCalc(DateTime d, double lat, double lng, EHouseCalc houseKind, int subIndex)

@@ -131,21 +131,18 @@ namespace microcosm
                 target.IsChecked = true;
             }
 
-            if (main.settings[0].progression == config.EProgression.SECONDARY)
             {
-                secondaryProgression.IsChecked = true;
-            }
-            else if (main.settings[0].progression == config.EProgression.PRIMARY)
-            {
-                koch.IsChecked = true;
-            }
-            else if (main.settings[0].progression == config.EProgression.SOLAR)
-            {
-                solarArcProgression.IsChecked = true;
-            }
-            else if (main.settings[0].progression == config.EProgression.CPS)
-            {
-                compositProgression.IsChecked = true;
+                // TODO: そもそも RadioButton の選択を Enum にやらせればこんな分岐は要らないはず
+                var progression = main.settings[0].progression;
+                var target = progression switch
+                {
+                    EProgression.SECONDARY => secondaryProgression,
+                    EProgression.PRIMARY => primaryProgression,
+                    EProgression.SOLAR => solarArcProgression,
+                    EProgression.CPS => compositProgression,
+                    _ => throw new ArgumentOutOfRangeException(nameof(progression)),
+                };
+                target.IsChecked = true;
             }
 
             if (main.settings[0].sameCusps)
@@ -268,22 +265,18 @@ namespace microcosm
                 target.IsChecked = true;
             }
 
-
-            if (main.settings[index].progression == config.EProgression.SECONDARY)
             {
-                secondaryProgression.IsChecked = true;
-            }
-            else if (main.settings[index].progression == config.EProgression.PRIMARY)
-            {
-                primaryProgression.IsChecked = true;
-            }
-            else if (main.settings[index].progression == config.EProgression.SOLAR)
-            {
-                solarArcProgression.IsChecked = true;
-            }
-            else if (main.settings[index].progression == config.EProgression.CPS)
-            {
-                compositProgression.IsChecked = true;
+                // TODO: そもそも RadioButton の選択を Enum にやらせればこんな分岐は要らないはず
+                var progression = main.settings[index].progression;
+                var target = progression switch
+                {
+                    EProgression.SECONDARY => secondaryProgression,
+                    EProgression.PRIMARY => primaryProgression,
+                    EProgression.SOLAR => solarArcProgression,
+                    EProgression.CPS => compositProgression,
+                    _ => throw new ArgumentOutOfRangeException(nameof(progression)),
+                };
+                target.IsChecked = true;
             }
 
             if (main.settings[index].sameCusps)

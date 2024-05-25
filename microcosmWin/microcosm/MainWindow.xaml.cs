@@ -558,28 +558,14 @@ namespace microcosm
             {
                 // progresはlist1とlist3の時刻で固定
                 list2 = calc.Progress(list1, list1UserData, list3UserData.GetBirthDateTime(), list1UserData.timezone, list1UserData.lat, list1UserData.lng);
-                if (currentSetting.progression == EProgression.SECONDARY)
+                houseList2 = currentSetting.progression switch
                 {
-                    houseList2 = calc.SecondaryProgressionHouseCalc(houseList1, list1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.lat, list1UserData.lng, list1UserData.timezone);
-                }
-                else if (currentSetting.progression == EProgression.PRIMARY)
-                {
-                    houseList2 = calc.PrimaryProgressionHouseCalc(houseList1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime());
-                }
-                else if (currentSetting.progression == EProgression.SOLAR)
-                {
-                    houseList2 = calc.SolarArcHouseCalc(list1[0].absolute_position, houseList1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.timezone);
-                }
-                else if (currentSetting.progression == EProgression.CPS)
-                {
-                    houseList2 = calc.CompositProgressionHouseCalc( houseList1, list1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.lat, list1UserData.lng, list1UserData.timezone);
-                }
-                else
-                {
-                    houseList2 = calc.CuspCalc(list1UserData.GetBirthDateTime(),
-                            list1UserData.timezone, list3UserData.lat, list3UserData.lng, configData.houseCalc);
-                }
-
+                    EProgression.SECONDARY => calc.SecondaryProgressionHouseCalc(houseList1, list1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.lat, list1UserData.lng, list1UserData.timezone),
+                    EProgression.PRIMARY => calc.PrimaryProgressionHouseCalc(houseList1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime()),
+                    EProgression.SOLAR => calc.SolarArcHouseCalc(list1[0].absolute_position, houseList1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.timezone),
+                    EProgression.CPS => calc.CompositProgressionHouseCalc(houseList1, list1, list1UserData.GetBirthDateTime(), list3UserData.GetBirthDateTime(), list1UserData.lat, list1UserData.lng, list1UserData.timezone),
+                    _ => calc.CuspCalc(list1UserData.GetBirthDateTime(), list1UserData.timezone, list3UserData.lat, list3UserData.lng, configData.houseCalc),
+                };
                 list2[CommonData.ZODIAC_ASC] = new PlanetData
                 {
                     no = CommonData.ZODIAC_ASC,
@@ -776,23 +762,14 @@ namespace microcosm
             mainWindowVM.targetUser2 = calcTargetUser[1].ToString();
             mainWindowVM.targetUser3 = calcTargetUser[2].ToString();
 
-
-            if (currentSetting.progression == EProgression.SOLAR)
+            mainWindowVM.progressionCalc = currentSetting.progression switch
             {
-                mainWindowVM.progressionCalc = "ソーラーアーク法";
-            }
-            else if (currentSetting.progression == EProgression.SECONDARY)
-            {
-                mainWindowVM.progressionCalc = "一日一年法";
-            }
-            else if (currentSetting.progression == EProgression.PRIMARY)
-            {
-                mainWindowVM.progressionCalc = "一度一年法";
-            }
-            else
-            {
-                mainWindowVM.progressionCalc = "CPS";
-            }
+                EProgression.SOLAR => "ソーラーアーク法",
+                EProgression.SECONDARY => "一日一年法",
+                EProgression.PRIMARY => "一度一年法",
+                EProgression.CPS => "CPS",
+                _ => throw new ArgumentOutOfRangeException(nameof(currentSetting.progression)),
+            };
 
             if (configData.sidereal == Esidereal.SIDEREAL)
             {
